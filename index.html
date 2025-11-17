@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografis Materi Excel: Menguasai Data Harian</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Script Chart.js dihapus karena tidak lagi digunakan -->
+    <!--
+    PLANNING COMMENT: 
+    Analisis Materi: Materi `logika-data.md` mencakup 4 pilar: 1. Operator Dasar (Aritmatika, Perbandingan), 2. Navigasi (Sort, Filter, Find, CF), 3. Remove Duplicates, 4. Text to Columns.
+    
+    Narrative Plan:
+    1.  Header: Judul "Menguasai Data Harian"
+    2.  Section 1 (Pilar 1): Operator Dasar. Dibagi 2 kartu: Aritmatika (ikon text '+') & Perbandingan (ikon text '>').
+    3.  Section 2 (Pilar 2): Navigasi Data. Dibagi 4 kartu (Sort, Filter, Find, CF) dengan ikon Unicode.
+    4.  Section 3 (Visualisasi Pilar 2): Visualisasi Conditional Formatting (CF). Menggunakan Chart.js Horizontal Bar untuk meniru "Data Bars".
+    5.  Section 4 (Pilar 3): Remove Duplicates. Menggunakan Chart.js Doughnut untuk memvisualisasikan data unik vs duplikat.
+    6.  Section 5 (Pilar 4): Text to Columns. Menggunakan diagram alur HTML (bukan SVG/Mermaid) untuk menunjukkan proses.
+    7.  Section 6 (Pro-Tips): Kesimpulan yang menyoroti fitur modern (Flash Fill, UNIQUE, Slicers).
+    
+    Color Palette:
+    Palette: Vibrant Gradient (ungu/biru/teal) - #4F46E5, #7C3AED, #14B8A6. Diterapkan via kelas Tailwind.
+    
+    Visualizations (NO SVG, NO MERMAID):
+    1.  Operator Icons: Teks biasa ('+', '>') dan Unicode ('↕️', '🔍', '🎯', '🎨', '⬇️'). - NO SVG.
+    2.  CF Visual: Chart.js Horizontal Bar (Canvas). - NO SVG.
+    3.  Duplicates Visual: Chart.js Doughnut (Canvas). - NO SVG.
+    4.  Text to Columns Flow: Diagram alur HTML/CSS + Unicode Arrow (⬇️). - NO SVG/Mermaid.
+    5.  Chart.js label wrapping and tooltip callbacks akan diimplementasikan.
+    
+    Konfirmasi: TIDAK ADA SVG. TIDAK ADA MERMAID JS.
+    -->
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 640px) {
+            .chart-container {
+                height: 300px;
+                max-height: 350px;
+            }
+        }
+        
+        .tab-btn {
+            @apply px-4 py-3 w-full font-semibold text-gray-700 bg-white rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 hover:-translate-y-1;
+        }
+        .tab-btn.active {
+            @apply bg-purple-600 text-white shadow-lg;
+        }
+        
+        .flash-fill-suggestion {
+            @apply text-gray-400 italic bg-gray-100 p-2 rounded-md;
+        }
+        /* Style baru untuk tabel contoh */
+        .example-table { @apply w-full text-sm border-collapse; }
+        .example-table th, .example-table td { @apply border p-2; }
+    </style>
+</head>
+<body class="bg-slate-50 font-sans leading-normal tracking-normal" style="font-family: 'Inter', sans-serif;">
+
+    <header class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg">
+        <div class="container mx-auto max-w-5xl p-8 md:p-12 text-center">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight">Menguasai Data Harian di Excel</h1>
+            <p class="text-xl md:text-2xl text-purple-100">Dari Data Berantakan Menjadi Wawasan Berharga</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto max-w-5xl p-4 md:p-8 mt-8">
+
+        <section class="mb-12">
+            <h2 class="text-3xl font-extrabold text-gray-900 mb-6 text-center tracking-tight">Pilar 1: Operator Dasar (Bahasa Excel)</h2>
+            <p class="text-lg text-gray-700 text-center mb-8">Sebelum menjalankan fungsi, Excel perlu memahami perhitungan dan perbandingan. Coba simulator di bawah untuk melihat bagaimana tanda kurung `( )` mengubah hasil.</p>
+            
+            <div class="bg-white p-6 rounded-xl shadow-xl mb-8">
+                <div class="flex items-center mb-4">
+                    <span class="text-3xl font-bold mr-3 rounded-lg bg-indigo-100 text-indigo-700 p-2 leading-none">+</span>
+                    <h3 class="text-2xl font-semibold text-gray-900">Operator Aritmatika & Teks</h3>
+                </div>
+                <p class="text-gray-600 mb-5">Ini adalah simbol dasar untuk melakukan kalkulasi atau menggabungkan data:</p>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    <div class="bg-indigo-50 p-3 rounded-lg shadow-inner">
+                        <div class="flex items-center mb-1">
+                            <code class="font-bold text-indigo-700 text-lg bg-indigo-100 rounded px-2 py-0.5">+</code>
+                            <span class="ml-2 text-sm font-semibold text-indigo-900">Penjumlahan</span>
+                        </div>
+                        <code class="text-xs text-gray-700 block">Contoh: =A1 + B1</code>
+                    </div>
+                    <div class="bg-indigo-50 p-3 rounded-lg shadow-inner">
+                        <div class="flex items-center mb-1">
+                            <code class="font-bold text-indigo-700 text-lg bg-indigo-100 rounded px-2 py-0.5">-</code>
+                            <span class="ml-2 text-sm font-semibold text-indigo-900">Pengurangan</span>
+                        </div>
+                        <code class="text-xs text-gray-700 block">Contoh: =A1 - B1</code>
+                    </div>
+                    <div class="bg-indigo-50 p-3 rounded-lg shadow-inner">
+                        <div class="flex items-center mb-1">
+                            <code class="font-bold text-indigo-700 text-lg bg-indigo-100 rounded px-2 py-0.5">*</code>
+                            <span class="ml-2 text-sm font-semibold text-indigo-900">Perkalian</span>
+                        </div>
+                        <code class="text-xs text-gray-700 block">Contoh: =A1 * B1</code>
+                    </div>
+                    <div class="bg-indigo-50 p-3 rounded-lg shadow-inner">
+                        <div class="flex items-center mb-1">
+                            <code class="font-bold text-indigo-700 text-lg bg-indigo-100 rounded px-2 py-0.5">/</code>
+                            <span class="ml-2 text-sm font-semibold text-indigo-900">Pembagian</span>
+                        </div>
+                        <code class="text-xs text-gray-700 block">Contoh: =A1 / B1</code>
+                    </div>
+                    <div class="bg-indigo-50 p-3 rounded-lg shadow-inner">
+                        <div class="flex items-center mb-1">
+                            <code class="font-bold text-indigo-700 text-lg bg-indigo-100 rounded px-2 py-0.5">^</code>
+                            <span class="ml-2 text-sm font-semibold text-indigo-900">Pangkat</span>
+                        </div>
+                        <code class="text-xs text-gray-700 block">Contoh: =A1^2</code>
+                    </div>
+                    <div class="bg-indigo-50 p-3 rounded-lg shadow-inner">
+                        <div class="flex items-center mb-1">
+                            <code class="font-bold text-indigo-700 text-lg bg-indigo-100 rounded px-2 py-0.5">%</code>
+                            <span class="ml-2 text-sm font-semibold text-indigo-900">Persentase</span>
+                        </div>
+                        <code class="text-xs text-gray-700 block">Contoh: =A1 * 10%</code>
+                    </div>
+                    <div class="bg-orange-50 p-3 rounded-lg shadow-inner sm:col-span-3">
+                        <div class="flex items-center mb-1">
+                            <code class="font-bold text-orange-700 text-lg bg-orange-100 rounded px-2 py-0.5">&</code>
+                            <span class="ml-2 text-sm font-semibold text-orange-900">Gabung Teks</span>
+                        </div>
+                        <code class="text-xs text-gray-700 block">Contoh: ="Jakarta" & " " & "Pusat"</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-xl">
+                <h3 class="text-2xl font-semibold text-gray-900 mb-4 text-center">Simulator Urutan Operasi (PEMDAS)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                    <input type="number" id="valA" value="5" class="p-2 border rounded text-center text-xl font-bold">
+                    <span class="text-center text-xl font-bold">+</span>
+                    <input type="number" id="valB" value="2" class="p-2 border rounded text-center text-xl font-bold">
+                    <span class="text-center text-xl font-bold">*</span>
+                    <input type="number" id="valC" value="3" class="p-2 border rounded text-center text-xl font-bold">
+                    <button id="calculateBtn" class="md:col-span-3 w-full py-3 px-4 bg-purple-600 text-white font-semibold rounded-lg shadow-md hover:bg-purple-700 transition-all transform hover:scale-105">Hitung</button>
+                </div>
+                
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-4 bg-gray-100 rounded-lg shadow-inner">
+                        <p class="text-sm font-semibold text-gray-700">Tanpa Tanda Kurung:</p>
+                        <p class="text-sm text-gray-600"><code id="calcNoParenStr">5 + 2 * 3</code></p>
+                        <p class="text-3xl font-bold text-gray-800 text-center mt-2" id="resultNoParen">11</p>
+                        <p class="text-xs text-center text-gray-500">(Perkalian `*` didahulukan)</p>
+                    </div>
+                    <div class="p-4 bg-purple-100 rounded-lg shadow-inner border border-purple-300">
+                        <p class="text-sm font-semibold text-purple-900">Dengan Tanda Kurung:</p>
+                        <p class="text-sm text-purple-800"><code id="calcWithParenStr">(5 + 2) * 3</code></p>
+                        <p class="text-3xl font-bold text-purple-800 text-center mt-2" id="resultWithParen">21</p>
+                        <p class="text-xs text-center text-purple-600">(Penjumlahan `+` didahulukan)</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white p-6 rounded-xl shadow-xl transform transition-transform hover:scale-105 mt-8">
+                <div class="flex items-center mb-4">
+                    <span class="text-3xl font-bold mr-3 rounded-lg bg-teal-100 text-teal-700 p-2 leading-none">&gt;</span>
+                    <h3 class="text-2xl font-semibold text-gray-900">Operator Perbandingan</h3>
+                </div>
+                <p class="text-gray-600 mb-4">Digunakan untuk membandingkan dua nilai. Hasilnya selalu `TRUE` (Benar) atau `FALSE` (Salah).</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-teal-50 p-3 rounded-lg shadow-inner">
+                        <div class="flex items-center mb-1">
+                            <code class="font-bold text-teal-700 text-lg bg-teal-100 rounded px-2 py-0.5">=</code>
+                            <span class="ml-2 text-sm font-semibold text-teal-900">Sama dengan</span>
+                        </div>
+                        <code class="text-xs text-gray-700 block">Contoh: =A1 = "Jakarta"</code>
+                    </div>
+                    <div class="bg-teal-50 p-3 rounded-lg shadow-inner">
+                        <div class="flex items-center mb-1">
+                            <code class="font-bold text-teal-700 text-lg bg-teal-100 rounded px-2 py-0.5">&lt;&gt;</code>
+                            <span class="ml-2 text-sm font-semibold text-teal-900">Tidak sama dengan</span>
+                        </div>
+                        <code class="text-xs text-gray-700 block">Contoh: =A1 &lt;&gt; "Jakarta"</code>
+                    </div>
+                    <div class="bg-teal-50 p-3 rounded-lg shadow-inner">
+                        <div class="flex items-center mb-1">
+                            <code class="font-bold text-teal-700 text-lg bg-teal-100 rounded px-2 py-0.5">&gt;</code>
+                            <span class="ml-2 text-sm font-semibold text-teal-900">Lebih dari</span>
+                        </div>
+                        <code class="text-xs text-gray-700 block">Contoh: =A1 &gt; 100</code>
+                    </div>
+                    <div class="bg-teal-50 p-3 rounded-lg shadow-inner">
+                        <div class="flex items-center mb-1">
+                            <code class="font-bold text-teal-700 text-lg bg-teal-100 rounded px-2 py-0.5">&lt;</code>
+                            <span class="ml-2 text-sm font-semibold text-teal-900">Kurang dari</span>
+                        </div>
+                        <code class="text-xs text-gray-700 block">Contoh: =A1 &lt; 100</code>
+                    </div>
+                    <div class="bg-teal-50 p-3 rounded-lg shadow-inner">
+                        <div class="flex items-center mb-1">
+                            <code class="font-bold text-teal-700 text-lg bg-teal-100 rounded px-2 py-0.5">&gt;=</code>
+                            <span class="ml-2 text-sm font-semibold text-teal-900">Lebih dari / sama dengan</span>
+                        </div>
+                        <code class="text-xs text-gray-700 block">Contoh: =A1 &gt;= 75</code>
+                    </div>
+                    <div class="bg-teal-50 p-3 rounded-lg shadow-inner">
+                        <div class="flex items-center mb-1">
+                            <code class="font-bold text-teal-700 text-lg bg-teal-100 rounded px-2 py-0.5">&lt;=</code>
+                            <span class="ml-2 text-sm font-semibold text-teal-900">Kurang dari / sama dengan</span>
+                        </div>
+                        <code class="text-xs text-gray-700 block">Contoh: =A1 &lt;= 75</code>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="text-3xl font-extrabold text-gray-900 mb-6 text-center tracking-tight">Pilar 2: Navigasi Data (Kompas Anda)</h2>
+            <p class="text-lg text-gray-700 text-center mb-8">Saat data Anda besar, 4 alat ini adalah cara Anda menjelajahi dan menemukan apa yang penting. Klik tab di bawah untuk melihat contoh data.</p>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <button id="tab-btn-sort" class="tab-btn active" onclick="selectTab('sort')">↕️ Sort</button>
+                <button id="tab-btn-filter" class="tab-btn" onclick="selectTab('filter')">🔍 Filter</button>
+                <button id="tab-btn-find" class="tab-btn" onclick="selectTab('find')">🎯 Find</button>
+                <button id="tab-btn-cf" class="tab-btn" onclick="selectTab('cf')">🎨 Conditional Formatting</button>
+            </div>
+            
+            <div id="tab-content-wrapper" class="bg-white p-6 rounded-xl shadow-xl">
+                <div id="tab-content-sort" class="tab-content">
+                    <h3 class="text-2xl font-semibold text-purple-800 mb-3">1. Sort (Mengurutkan)</h3>
+                    
+                    <div class="text-gray-700 space-y-3 mb-6 border-b pb-4">
+                        <p><strong>Apa:</strong> Mengatur ulang baris data berdasarkan kriteria di satu atau beberapa kolom.</p>
+                        <p><strong>Kapan:</strong> Saat Anda ingin melihat data dari yang terbesar, terkecil, terlama, terbaru, atau sesuai abjad.</p>
+                        <div>
+                            <strong class="block">Mendalam:</strong>
+                            <ul class="list-disc list-inside ml-4 text-sm">
+                                <li><strong>Sort Biasa (A-Z):</strong> Cukup klik kanan di kolom > Sort.</li>
+                                <li><strong>Multi-Level Sort (Penting!):</strong> Gunakan dialog 'Custom Sort' (Tab Data > Sort). Ini memungkinkan Anda mengurutkan berdasarkan Departemen, *lalu* Gaji.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <h4 class="font-semibold text-center mb-2 text-gray-800">Contoh Visual</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <h4 class="font-semibold text-center mb-2">Data Awal</h4>
+                            <table class="example-table">
+                                <thead><tr class="bg-gray-100"><th>Nama</th><th>Nilai</th></tr></thead>
+                                <tbody>
+                                    <tr><td>Budi</td><td>80</td></tr>
+                                    <tr><td>Cintia</td><td>95</td></tr>
+                                    <tr><td>Andi</td><td>75</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-center mb-2">Data Sesudah (Sort A-Z by Nama)</h4>
+                            <table class="example-table">
+                                <thead><tr class="bg-green-100"><th>Nama</th><th>Nilai</th></tr></thead>
+                                <tbody>
+                                    <tr><td>Andi</td><td>75</td></tr>
+                                    <tr><td>Budi</td><td>80</td></tr>
+                                    <tr><td>Cintia</td><td>95</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="tab-content-filter" class="tab-content hidden">
+                    <h3 class="text-2xl font-semibold text-purple-800 mb-3">2. Filter (Menyaring)</h3>
+
+                    <div class="text-gray-700 space-y-3 mb-6 border-b pb-4">
+                        <p><strong>Apa:</strong> Menyembunyikan sementara baris yang tidak Anda perlukan.</p>
+                        <p><strong>Kapan:</strong> Saat Anda hanya ingin fokus pada segmen data tertentu (misal: hanya penjualan di bulan Mei).</p>
+                        <div>
+                            <strong class="block">Mendalam:</strong>
+                            <ul class="list-disc list-inside ml-4 text-sm">
+                                <li><strong>AutoFilter (Panah Dropdown):</strong> Klik Data > Filter (Ctrl+Shift+L).</li>
+                                <li><strong>Filter by Text/Number:</strong> Anda bisa memfilter berdasarkan "Contains", "Top 10", "Above Average", dll.</li>
+                                <li><strong>Slicers (Modern!):</strong> Jika data Anda adalah Tabel (Ctrl+T), Slicer adalah tombol filter visual yang profesional.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <h4 class="font-semibold text-center mb-2 text-gray-800">Contoh Visual (Filter: "Jakarta")</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <h4 class="font-semibold text-center mb-2">Data Awal</h4>
+                            <table class="example-table">
+                                <thead><tr class="bg-gray-100"><th>Nama</th><th>Cabang</th></tr></thead>
+                                <tbody>
+                                    <tr><td>Budi</td><td>Jakarta</td></tr>
+                                    <tr><td>Cintia</td><td>Bandung</td></tr>
+                                    <tr><td>Andi</td><td>Jakarta</td></tr>
+                                    <tr><td>Dodi</td><td>Surabaya</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-center mb-2">Data Sesudah (Filter: "Jakarta")</h4>
+                            <table class="example-table">
+                                <thead><tr class="bg-green-100"><th>Nama</th><th>Cabang</th></tr></thead>
+                                <tbody>
+                                    <tr><td>Budi</td><td>Jakarta</td></tr>
+                                    <tr><td>Andi</td><td>Jakarta</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-content-find" class="tab-content hidden">
+                    <h3 class="text-2xl font-semibold text-purple-800 mb-3">3. Find (Mencari)</h3>
+                    
+                    <div class="text-gray-700 space-y-3 mb-6 border-b pb-4">
+                        <p><strong>Apa:</strong> (Ctrl+F) Menemukan nilai spesifik di dalam sheet atau workbook.</p>
+                        <p><strong>Kapan:</strong> Saat Anda tahu *apa* yang dicari, tapi tidak tahu *di mana* letaknya.</p>
+                        <div>
+                            <strong class="block">Mendalam:</strong>
+                            <ul class="list-disc list-inside ml-4 text-sm">
+                                <li><strong>Find vs. Replace (Ctrl+H):</strong> `Find` untuk menemukan, `Replace` untuk menemukan lalu mengganti (berguna untuk membersihkan data).</li>
+                                <li><strong>Wildcards:</strong> Gunakan `*` (menggantikan banyak karakter) atau `?` (menggantikan satu karakter).</li>
+                                <li><strong>Opsi "Look in: Values vs. Formulas":</strong> Penting jika Anda mencari hasil dari sebuah formula.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-content-cf" class="tab-content hidden">
+                    <h3 class="text-2xl font-semibold text-purple-800 mb-3">4. Conditional Formatting (CF)</h3>
+                    
+                    <div class="text-gray-700 space-y-3 mb-6 border-b pb-4">
+                        <p><strong>Apa:</strong> Memberi "cat warna" pada sel secara otomatis berdasarkan isinya.</p>
+                        <p><strong>Kapan:</strong> Untuk menemukan *pola* atau *anomali* secara visual dengan cepat. Otak kita lebih cepat memproses warna daripada angka.</p>
+                        <div>
+                            <strong class="block">Mendalam:</strong>
+                            <ul class="list-disc list-inside ml-4 text-sm">
+                                <li><strong>Highlight Rules:</strong> Paling umum (Misal: Warnai merah semua nilai < 50).</li>
+                                <li><strong>Data Bars & Color Scales:</strong> Membuat visualisasi data langsung di dalam sel.</li>
+                                <li><strong>Paling Kuat: "Use a formula...":</strong> Memformat *seluruh baris* berdasarkan nilai di satu sel.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="font-semibold text-center mb-2 text-gray-800">Contoh Visual (CF "Nilai < 75")</h4>
+                        <table class="example-table">
+                            <thead><tr class="bg-gray-100"><th>Nama</th><th>Nilai</th></tr></thead>
+                            <tbody>
+                                <tr><td>Budi</td><td>80</td></tr>
+                                <tr><td>Cintia</td><td>95</td></tr>
+                                <tr class="bg-red-200 text-red-900 font-bold"><td>Andi</td><td>70</td></tr>
+                                <tr class="bg-red-200 text-red-900 font-bold"><td>Dodi</td><td>65</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grafik CF yang ada di sini sebelumnya SEKARANG DIHAPUS -->
+        </section>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            <section class="mb-12 bg-white p-6 md:p-8 rounded-xl shadow-xl">
+                <h2 class="text-3xl font-extrabold text-gray-900 mb-4 tracking-tight">Pilar 3: Remove Duplicates</h2>
+                <p class="text-gray-600 mb-6">Fitur ini menghapus baris yang identik secara permanen untuk memastikan data Anda unik. Visualisasi ini menunjukkan data sebelum dan sesudah proses pembersihan.</p>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-lg font-semibold text-blue-800 mb-3 text-center">Data Awal (Kotor)</h4>
+                        <table class="w-full text-sm border">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="p-2 border">Email</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border"><td class="p-2">andi@mail.com</td></tr>
+                                <tr class="border"><td class="p-2">budi@mail.com</td></tr>
+                                <tr class="border"><td class="p-2">cintia@mail.com</td></tr>
+                                <tr class="border bg-red-100"><td class="p-2 line-through text-red-700">andi@mail.com</td></tr>
+                                <tr class="border"><td class="p-2">dodi@mail.com</td></tr>
+                                <tr class="border"><td class="p-2">eka@mail.com</td></tr>
+                                <tr class="border bg-red-100"><td class="p-2 line-through text-red-700">budi@mail.com</td></tr>
+                                <tr class="border"><td class="p-2">fajar@mail.com</td></tr>
+                            </tbody>
+                        </table>
+                        <p class="text-xs text-center text-gray-500 mt-1">Data duplikat ditandai merah.</p>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-semibold text-green-700 mb-3 text-center">Data Hasil (Bersih)</h4>
+                        <table class="w-full text-sm border">
+                            <thead>
+                                <tr class="bg-green-100">
+                                    <th class="p-2 border text-green-800">Email Unik</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border"><td class="p-2">andi@mail.com</td></tr>
+                                <tr class="border"><td class="p-2">budi@mail.com</td></tr>
+                                <tr class="border"><td class="p-2">cintia@mail.com</td></tr>
+                                <tr class="border"><td class="p-2">dodi@mail.com</td></tr>
+                                <tr class="border"><td class="p-2">eka@mail.com</td></tr>
+                                <tr class="border"><td class="p-2">fajar@mail.com</td></tr>
+                                <tr class="border"><td class="p-2 bg-gray-50 h-full">&nbsp;</td></tr>
+                                <tr class="border"><td class="p-2 bg-gray-50 h-full">&nbsp;</td></tr>
+                            </tbody>
+                        </table>
+                        <p class="text-xs text-center text-gray-500 mt-1">Hanya data unik yang tersisa.</p>
+                    </div>
+                </div>
+
+                <!-- Pro-Tip yang salah tempat dihapus dari sini -->
+            </section>
+
+            <!-- Bagian Pilar 4 yang hilang ditambahkan di sini -->
+            <section class="mb-12 bg-white p-6 md:p-8 rounded-xl shadow-xl">
+                <h2 class="text-3xl font-extrabold text-gray-900 mb-4 tracking-tight">Pilar 4: Simulasi Flash Fill (Join)</h2>
+                <p class="text-gray-600 mb-6">Daripada "Text to Columns", kita akan coba keajaiban "Flash Fill" (Ctrl+E) untuk *menggabungkan* data. Ketik pola di baris pertama, lalu klik tombol simulasi.</p>
+                
+                <div class="space-y-4">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="p-2 border font-semibold">Nama Depan</th>
+                                <th class="p-2 border font-semibold">Nama Belakang</th>
+                                <th class="p-2 border font-semibold">Nama Lengkap (Hasil)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="p-2 border">Andi</td>
+                                <td class="p-2 border">Wijaya</td>
+                                <td class="p-1 border"><input id="flashFillInput-1" type="text" class="p-2 w-full border-blue-300 border-2 rounded" placeholder="Ketik 'Andi Wijaya'"></td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 border">Budi</td>
+                                <td class="p-2 border">Santoso</td>
+                                <td class="p-1 border"><input id="flashFillSuggest-1" type="text" class="p-2 w-full bg-gray-100 italic text-gray-400 border rounded" readonly></td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 border">Cintia</td>
+                                <td class="p-2 border">Lestari</td>
+                                <td class="p-1 border"><input id="flashFillSuggest-2" type="text" class="p-2 w-full bg-gray-100 italic text-gray-400 border rounded" readonly></td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 border">Dodi</td>
+                                <td class="p-2 border">Setiawan</td>
+                                <td class="p-1 border"><input id="flashFillSuggest-3" type="text" class="p-2 w-full bg-gray-100 italic text-gray-400 border rounded" readonly></td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 border">Eka</td>
+                                <td class="p-2 border">Pratiwi</td>
+                                <td class="p-1 border"><input id="flashFillSuggest-4" type="text" class="p-2 w-full bg-gray-100 italic text-gray-400 border rounded" readonly></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button id="runFlashFillBtn" class="w-full py-3 px-4 bg-purple-600 text-white font-semibold rounded-lg shadow-md hover:bg-purple-700 transition-all transform hover:scale-105">Jalankan Simulasi (Ctrl+E)</button>
+                </div>
+
+                <div class="mt-8 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded-r-lg">
+                    <p class="text-sm font-semibold text-yellow-800">Pro-Tip (Ajaib!): Di Excel, Anda hanya perlu mengetik "Andi Wijaya", menekan Enter, lalu mulai mengetik "B" di baris kedua. Excel akan otomatis menampilkan sugesti abu-abu. Tekan Enter untuk menerima!</p>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <footer class="bg-gray-900 text-gray-300 mt-12">
+        <div class="container mx-auto max-w-5xl p-8 text-center">
+            <h2 class="text-2xl font-bold text-white mb-4">Kesimpulan: Anda adalah Penjinak Data!</h2>
+            <p class="mb-6">Dengan 4 pilar ini, Anda siap mengubah data berantakan menjadi keputusan yang cerdas. Selalu ingat pro-tips modern!</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8 text-left">
+                <div class="bg-gray-800 p-4 rounded-lg shadow-lg transform transition-transform hover:scale-105 hover:bg-gray-700">
+                    <h4 class="font-bold text-yellow-400">Flash Fill (Ctrl+E)</h4>
+                    <p class="text-sm text-gray-200 mt-1">Fitur AI ajaib untuk memisahkan atau menggabungkan data secara otomatis berdasarkan pola yang Anda berikan.</p>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg shadow-lg transform transition-transform hover:scale-105 hover:bg-gray-700">
+                    <h4 class="font-bold text-yellow-400">Fungsi =UNIQUE()</h4>
+                    <p class="text-sm text-gray-200 mt-1">Cara modern (non-destruktif) untuk mendapatkan daftar unik, menggantikan 'Remove Duplicates' yang permanen.</p>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg shadow-lg transform transition-transform hover:scale-105 hover:bg-gray-700">
+                    <h4 class="font-bold text-yellow-400">Tabel (Ctrl+T)</h4>
+                    <p class="text-sm text-gray-200 mt-1">Mengubah data Anda menjadi 'Tabel' resmi membuat Sort, Filter, dan formula menjadi dinamis.</p>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg shadow-lg transform transition-transform hover:scale-105 hover:bg-gray-700">
+                    <h4 class="font-bold text-yellow-400">Slicers</h4>
+                    <p class="text-sm text-gray-200 mt-1">Tombol filter visual yang profesional. Hanya berfungsi jika data Anda sudah diubah menjadi 'Tabel (Ctrl+T)'.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const initPemdasCalculator = () => {
+                const calculateBtn = document.getElementById('calculateBtn');
+                calculateBtn.addEventListener('click', () => {
+                    const a = parseFloat(document.getElementById('valA').value) || 0;
+                    const b = parseFloat(document.getElementById('valB').value) || 0;
+                    const c = parseFloat(document.getElementById('valC').value) || 0;
+                    
+                    const noParen = a + b * c;
+                    const withParen = (a + b) * c;
+                    
+                    document.getElementById('calcNoParenStr').textContent = `${a} + ${b} * ${c}`;
+                    document.getElementById('resultNoParen').textContent = noParen;
+                    
+                    document.getElementById('calcWithParenStr').textContent = `(${a} + ${b}) * ${c}`;
+                    document.getElementById('resultWithParen').textContent = withParen;
+                });
+                calculateBtn.click();
+            };
+
+            const initFlashFill = () => {
+                const input = document.getElementById('flashFillInput-1');
+                const btn = document.getElementById('runFlashFillBtn');
+                
+                const suggestions = [
+                    { id: 'flashFillSuggest-1', value: 'Budi Santoso' },
+                    { id: 'flashFillSuggest-2', value: 'Cintia Lestari' },
+                    { id: 'flashFillSuggest-3', value: 'Dodi Setiawan' },
+                    { id: 'flashFillSuggest-4', value: 'Eka Pratiwi' }
+                ];
+
+                const clearSuggestions = () => {
+                    suggestions.forEach(s => {
+                        const el = document.getElementById(s.id);
+                        if (el) el.value = '';
+                    });
+                };
+                
+                btn.addEventListener('click', () => {
+                    const val = input.value.trim();
+                    if (val.toLowerCase() === 'andi wijaya') {
+                        suggestions.forEach(s => {
+                            const el = document.getElementById(s.id);
+                            if (el) el.value = s.value;
+                        });
+                    } else {
+                        clearSuggestions();
+                    }
+                });
+
+                input.addEventListener('input', () => {
+                     if (input.value.trim() === '') {
+                        clearSuggestions();
+                     }
+                });
+            };
+
+            // Fungsi createCfChart() DIHAPUS
+            
+            initPemdasCalculator();
+            initFlashFill();
+            selectTab('sort');
+        });
+        
+        const selectTab = (tabName) => {
+            const allTabs = document.querySelectorAll('.tab-btn');
+            allTabs.forEach(btn => btn.classList.remove('active'));
+            
+            const allContents = document.querySelectorAll('.tab-content');
+            allContents.forEach(content => content.classList.add('hidden'));
+            
+            document.getElementById(`tab-btn-${tabName}`).classList.add('active');
+            document.getElementById(`tab-content-${tabName}`).classList.remove('hidden');
+        };
+    </script>
+
+</body>
+</html>
